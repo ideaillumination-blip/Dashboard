@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humboldt Throws Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 50%, #1a472a 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #f5c142;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: #f5c142;
+            margin-bottom: 4px;
+        }
+
+        .header .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .date-display {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #f5c142;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #f5c142;
+        }
+
+        .card-header .icon {
+            font-size: 1.2rem;
+        }
+
+        /* Weather Card */
+        .weather-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .weather-temp {
+            font-size: 3rem;
+            font-weight: 300;
+        }
+
+        .weather-icon {
+            font-size: 3.5rem;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .weather-detail-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .weather-detail-item .label {
+            opacity: 0.7;
+            font-size: 0.75rem;
+            margin-bottom: 2px;
+        }
+
+        .weather-detail-item .value {
+            font-weight: 600;
+        }
+
+        .gear-recommendation {
+            margin-top: 12px;
+            padding: 10px;
+            background: rgba(245, 193, 66, 0.2);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            border-left: 3px solid #f5c142;
+        }
+
+        /* Quote Card */
+        .quote-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .quote-author {
+            text-align: right;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Diet Card */
+        .meal-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f5c142;
+        }
+
+        .meal-description {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .meal-macros {
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+        }
+
+        .macro-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .recipe-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(245, 193, 66, 0.3);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .recipe-link:hover {
+            background: rgba(245, 193, 66, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .recipe-source {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 8px;
+        }
+
+        /* Finance Card */
+        .finance-tip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f5c142;
+        }
+
+        .finance-tip-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Links Section */
+        .links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .link-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .link-button:hover, .link-button:active {
+            background: rgba(245, 193, 66, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .link-button .link-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .link-button .link-text {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .link-button.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Roster Section */
+        .roster-section {
+            margin-top: 8px;
+        }
+
+        .roster-toggle {
+            width: 100%;
+            padding: 12px;
+            background: rgba(245, 193, 66, 0.2);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .roster-toggle:hover {
+            background: rgba(245, 193, 66, 0.3);
+        }
+
+        .roster-list {
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        .roster-list.active {
+            display: block;
+        }
+
+        .athlete-link {
+            display: block;
+            padding: 10px 12px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .athlete-link:hover {
+            background: rgba(245, 193, 66, 0.2);
+        }
+
+        .athlete-year {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-left: 8px;
+        }
+
+        .athlete-event {
+            font-size: 0.75rem;
+            color: #f5c142;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            opacity: 0.7;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-top: 20px;
+        }
+
+        /* Scrollbar styling */
+        .roster-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .roster-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+        }
+
+        .roster-list::-webkit-scrollbar-thumb {
+            background: rgba(245, 193, 66, 0.5);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏋️ Humboldt Throws</h1>
+            <div class="subtitle">Daily Dashboard</div>
+        </header>
+
+        <div class="date-display" id="dateDisplay"></div>
+
+        <!-- Weather Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🌤️</span>
+                <span>Arcata Weather</span>
+            </div>
+            <div id="weatherContent" class="loading">Loading weather...</div>
+        </div>
+
+        <!-- Daily Quote Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">💭</span>
+                <span>Daily Motivation</span>
+            </div>
+            <div id="quoteContent"></div>
+        </div>
+
+        <!-- Mediterranean Diet Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🥗</span>
+                <span>Dinner Suggestion</span>
+            </div>
+            <div id="mealContent"></div>
+        </div>
+
+        <!-- Personal Finance Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">💰</span>
+                <span>Finance Tip</span>
+            </div>
+            <div id="financeContent"></div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🔗</span>
+                <span>Quick Links</span>
+            </div>
+            <div class="links-grid">
+                <a href="https://humboldtathletics.com/index.aspx" target="_blank" rel="noopener" class="link-button full-width">
+                    <span class="link-icon">🌲</span>
+                    <span class="link-text">Humboldt Athletics</span>
+                </a>
+                <a href="https://www.tfrrs.org/teams/tf/CA_college_m_Cal_Poly_Humboldt.html" target="_blank" rel="noopener" class="link-button">
+                    <span class="link-icon">👨</span>
+                    <span class="link-text">Men's TFRRS</span>
+                </a>
+                <a href="https://www.tfrrs.org/teams/tf/CA_college_f_Cal_Poly_Humboldt.html" target="_blank" rel="noopener" class="link-button">
+                    <span class="link-icon">👩</span>
+                    <span class="link-text">Women's TFRRS</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Athlete Roster Links -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">👥</span>
+                <span>Athlete Profiles</span>
+            </div>
+            <div class="roster-section">
+                <button class="roster-toggle" onclick="toggleRoster('women')">
+                    <span>Women's Roster</span>
+                    <span id="womenArrow">▼</span>
+                </button>
+                <div class="roster-list" id="womenRoster"></div>
+
+                <button class="roster-toggle" onclick="toggleRoster('men')">
+                    <span>Men's Roster</span>
+                    <span id="menArrow">▼</span>
+                </button>
+                <div class="roster-list" id="menRoster"></div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            Cal Poly Humboldt Throws Program<br>
+            Dashboard updates daily at midnight
+        </footer>
+    </div>
+
+    <script>
+        // ===== DATA STORES =====
+
+        const quotes = [
+            { text: "The only way to prove you are a good sport is to lose.", author: "Ernie Banks" },
+            { text: "Hard work beats talent when talent doesn't work hard.", author: "Tim Notke" },
+            { text: "The more I practice, the luckier I get.", author: "Gary Player" },
+            { text: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky" },
+            { text: "It's not whether you get knocked down; it's whether you get up.", author: "Vince Lombardi" },
+            { text: "The fight is won or lost far away from witnesses.", author: "Muhammad Ali" },
+            { text: "Excellence is not a singular act, but a habit.", author: "Shaquille O'Neal" },
+            { text: "Do not let what you cannot do interfere with what you can do.", author: "John Wooden" },
+            { text: "The only place success comes before work is in the dictionary.", author: "Vidal Sassoon" },
+            { text: "Champions keep playing until they get it right.", author: "Billie Jean King" },
+            { text: "You have to expect things of yourself before you can do them.", author: "Michael Jordan" },
+            { text: "The will to win means nothing without the will to prepare.", author: "Juma Ikangaa" },
+            { text: "Pain is temporary. Quitting lasts forever.", author: "Lance Armstrong" },
+            { text: "If you want to be the best, you have to do things others aren't willing to do.", author: "Michael Phelps" },
+            { text: "The principle is competing against yourself. It's about self-improvement.", author: "Steve Young" },
+            { text: "Set your goals high, and don't stop till you get there.", author: "Bo Jackson" },
+            { text: "Persistence can change failure into extraordinary achievement.", author: "Marv Levy" },
+            { text: "Make each day your masterpiece.", author: "John Wooden" },
+            { text: "The harder the battle, the sweeter the victory.", author: "Les Brown" },
+            { text: "It ain't over till it's over.", author: "Yogi Berra" },
+            { text: "What you lack in talent can be made up with desire, hustle, and giving 110% all the time.", author: "Don Zimmer" },
+            { text: "Never give up, never give in, and when the upper hand is ours, may we have the ability to handle the win with the dignity that we absorbed the loss.", author: "Doug Williams" },
+            { text: "One man practicing sportsmanship is far better than a hundred teaching it.", author: "Knute Rockne" },
+            { text: "An athlete cannot run with money in his pockets. He must run with hope in his heart and dreams in his head.", author: "Emil Zatopek" },
+            { text: "The five S's of sports training are: stamina, speed, strength, skill, and spirit; but the greatest of these is spirit.", author: "Ken Doherty" },
+            { text: "When you've got something to prove, there's nothing greater than a challenge.", author: "Terry Bradshaw" },
+            { text: "Most people give up just when they're about to achieve success.", author: "Ross Perot" },
+            { text: "I've learned that something constructive comes from every defeat.", author: "Tom Landry" },
+            { text: "Winning isn't everything, but wanting to win is.", author: "Vince Lombardi" },
+            { text: "The difference between the impossible and the possible lies in a person's determination.", author: "Tommy Lasorda" }
+        ];
+
+        const meals = [
+            {
+                name: "Grilled Salmon with Lemon Herb Quinoa",
+                description: "Wild-caught salmon fillet seasoned with olive oil, garlic, and fresh dill, served over fluffy quinoa tossed with cherry tomatoes, cucumbers, and a lemon vinaigrette.",
+                protein: "42g", carbs: "45g", fat: "18g",
+                recipeUrl: "https://www.cookingclassy.com/grilled-salmon-with-avocado-greek-salsa-and-orzo/",
+                source: "Cooking Classy"
+            },
+            {
+                name: "Greek Chicken Souvlaki Bowl",
+                description: "Marinated chicken thighs grilled with oregano and lemon, served over brown rice with tzatziki sauce, kalamata olives, red onion, and a fresh cucumber-tomato salad.",
+                protein: "38g", carbs: "52g", fat: "14g",
+                recipeUrl: "https://www.budgetbytes.com/chicken-souvlaki-bowls/",
+                source: "Budget Bytes"
+            },
+            {
+                name: "Mediterranean Stuffed Bell Peppers",
+                description: "Bell peppers filled with seasoned ground turkey, brown rice, spinach, sun-dried tomatoes, and feta cheese. Baked until tender and topped with fresh basil.",
+                protein: "32g", carbs: "40g", fat: "12g",
+                recipeUrl: "https://www.wellplated.com/mediterranean-stuffed-peppers/",
+                source: "Well Plated"
+            },
+            {
+                name: "Lemon Herb Grilled Chicken with Tabbouleh",
+                description: "Herb-marinated chicken breast served alongside fresh tabbouleh made with bulgur wheat, parsley, mint, tomatoes, and a bright lemon dressing.",
+                protein: "40g", carbs: "48g", fat: "10g",
+                recipeUrl: "https://cookieandkate.com/best-tabbouleh-recipe/",
+                source: "Cookie and Kate"
+            },
+            {
+                name: "Baked Cod with Roasted Vegetables",
+                description: "Flaky cod fillet baked with olive oil, capers, and fresh herbs, served with a medley of roasted zucchini, eggplant, and bell peppers drizzled with balsamic glaze.",
+                protein: "35g", carbs: "32g", fat: "12g",
+                recipeUrl: "https://www.themediterraneandish.com/mediterranean-baked-cod-recipe/",
+                source: "The Mediterranean Dish"
+            },
+            {
+                name: "Lamb Kofta with Couscous",
+                description: "Spiced ground lamb formed into kebabs and grilled, served over whole wheat couscous with roasted red peppers, chickpeas, and a yogurt-mint sauce.",
+                protein: "36g", carbs: "55g", fat: "16g",
+                recipeUrl: "https://www.recipetineats.com/lamb-kofta/",
+                source: "RecipeTin Eats"
+            },
+            {
+                name: "Shrimp and White Bean Stew",
+                description: "Large shrimp simmered with cannellini beans, tomatoes, garlic, and fresh rosemary in a light broth. Served with crusty whole grain bread for dipping.",
+                protein: "34g", carbs: "42g", fat: "8g",
+                recipeUrl: "https://www.bonappetit.com/recipe/white-bean-and-shrimp-stew",
+                source: "Bon Appétit"
+            },
+            {
+                name: "Chicken Shawarma Plate",
+                description: "Thinly sliced chicken thigh marinated in warm spices, served with garlic sauce, pickled turnips, fresh vegetables, and warm whole wheat pita.",
+                protein: "38g", carbs: "50g", fat: "14g",
+                recipeUrl: "https://www.budgetbytes.com/chicken-shawarma/",
+                source: "Budget Bytes"
+            },
+            {
+                name: "Grilled Halloumi with Roasted Vegetables",
+                description: "Grilled halloumi cheese served with charred eggplant, zucchini, and red peppers. Accompanied by warm pita, hummus, and a drizzle of za'atar olive oil.",
+                protein: "28g", carbs: "45g", fat: "22g",
+                recipeUrl: "https://cookieandkate.com/halloumi-recipe/",
+                source: "Cookie and Kate"
+            },
+            {
+                name: "Shakshuka (Baked Eggs in Tomato Sauce)",
+                description: "Eggs poached in a spiced tomato and pepper sauce with cumin and paprika, topped with crumbled feta and fresh parsley. Served with whole grain toast.",
+                protein: "24g", carbs: "35g", fat: "16g",
+                recipeUrl: "https://www.seriouseats.com/shakshuka-recipe",
+                source: "Serious Eats"
+            },
+            {
+                name: "Herb-Crusted Chicken with Farro Salad",
+                description: "Chicken breast coated in a mixture of fresh herbs and breadcrumbs, baked until golden. Served with a hearty farro salad featuring arugula, roasted beets, and goat cheese.",
+                protein: "42g", carbs: "48g", fat: "14g",
+                recipeUrl: "https://www.loveandlemons.com/farro-salad/",
+                source: "Love and Lemons"
+            },
+            {
+                name: "Grilled Swordfish with Olive Tapenade",
+                description: "Meaty swordfish steak grilled to perfection, topped with a briny olive tapenade. Served with roasted fingerling potatoes and sautéed spinach with garlic.",
+                protein: "40g", carbs: "38g", fat: "18g",
+                recipeUrl: "https://www.themediterraneandish.com/grilled-swordfish-recipe/",
+                source: "The Mediterranean Dish"
+            },
+            {
+                name: "Falafel Bowl with Tahini Dressing",
+                description: "Crispy baked falafel served over a bed of mixed greens with pickled red cabbage, shredded carrots, cherry tomatoes, and a creamy tahini dressing.",
+                protein: "22g", carbs: "58g", fat: "16g",
+                recipeUrl: "https://minimalistbaker.com/easy-vegan-falafel/",
+                source: "Minimalist Baker"
+            },
+            {
+                name: "Moroccan Chicken Tagine",
+                description: "Slow-cooked chicken with preserved lemons, green olives, and warm spices like cumin and cinnamon. Served over fluffy couscous with toasted almonds.",
+                protein: "36g", carbs: "52g", fat: "12g",
+                recipeUrl: "https://www.recipetineats.com/moroccan-chicken-tagine/",
+                source: "RecipeTin Eats"
+            },
+            {
+                name: "Mediterranean Lentil Soup",
+                description: "Hearty red lentils simmered with tomatoes, carrots, celery, and warming spices like cumin and turmeric. Finished with lemon juice and fresh parsley.",
+                protein: "18g", carbs: "45g", fat: "6g",
+                recipeUrl: "https://cookieandkate.com/best-lentil-soup-recipe/",
+                source: "Cookie and Kate"
+            },
+            {
+                name: "Greek Turkey Meatballs with Orzo",
+                description: "Tender turkey meatballs seasoned with oregano and garlic, served over lemony orzo pasta with spinach, sun-dried tomatoes, and crumbled feta.",
+                protein: "35g", carbs: "50g", fat: "12g",
+                recipeUrl: "https://www.skinnytaste.com/greek-turkey-meatballs/",
+                source: "Skinnytaste"
+            },
+            {
+                name: "Grilled Chicken with Hummus and Vegetables",
+                description: "Simply grilled chicken breast served with a generous scoop of hummus, warm pita bread, and a colorful array of fresh and pickled vegetables.",
+                protein: "40g", carbs: "42g", fat: "14g",
+                recipeUrl: "https://www.themediterraneandish.com/how-to-make-hummus/",
+                source: "The Mediterranean Dish"
+            },
+            {
+                name: "Baked Feta Pasta",
+                description: "Cherry tomatoes and a block of feta cheese roasted until caramelized, then tossed with pasta, fresh basil, and a drizzle of olive oil. Simple and satisfying.",
+                protein: "18g", carbs: "65g", fat: "20g",
+                recipeUrl: "https://www.budgetbytes.com/baked-feta-pasta/",
+                source: "Budget Bytes"
+            },
+            {
+                name: "Spiced Chickpea and Vegetable Stew",
+                description: "Chickpeas simmered with sweet potatoes, tomatoes, and warming spices like cumin and coriander. Served over brown rice with a dollop of Greek yogurt.",
+                protein: "16g", carbs: "58g", fat: "8g",
+                recipeUrl: "https://minimalistbaker.com/1-pot-chickpea-shakshuka/",
+                source: "Minimalist Baker"
+            },
+            {
+                name: "Grilled Shrimp with Greek Salad",
+                description: "Garlic and herb marinated shrimp grilled until pink, served alongside a classic Greek salad with tomatoes, cucumbers, red onion, olives, and feta.",
+                protein: "32g", carbs: "18g", fat: "16g",
+                recipeUrl: "https://www.loveandlemons.com/greek-salad/",
+                source: "Love and Lemons"
+            },
+            {
+                name: "Mediterranean Chicken and Rice",
+                description: "One-pan dish with chicken thighs, rice, artichoke hearts, sun-dried tomatoes, and olives cooked together with herbs and chicken broth.",
+                protein: "38g", carbs: "48g", fat: "14g",
+                recipeUrl: "https://www.wellplated.com/mediterranean-chicken/",
+                source: "Well Plated"
+            }
+        ];
+
+        const financeTips = [
+            {
+                title: "Start Your Emergency Fund Now",
+                text: "Even $25 per month adds up. Aim for $1,000 as your first milestone, then build toward 3-6 months of expenses. This protects you from going into debt when unexpected costs arise."
+            },
+            {
+                title: "Understand Compound Interest",
+                text: "If you invest $100/month starting at age 22 with 7% average returns, you'll have over $260,000 by age 60. Start the same habit at 32, and you'd have only about $120,000. Time is your greatest asset."
+            },
+            {
+                title: "Track Your Spending for One Month",
+                text: "Before budgeting, know where your money actually goes. Use a free app or simple spreadsheet. Most people are surprised by how small purchases add up—that's where you find money to save."
+            },
+            {
+                title: "Use the 50/30/20 Budget Rule",
+                text: "Allocate 50% of income to needs (rent, food, bills), 30% to wants (entertainment, dining out), and 20% to savings and debt repayment. It's simple and flexible."
+            },
+            {
+                title: "Avoid Lifestyle Inflation",
+                text: "When you earn more, resist the urge to spend more. If you get a raise or bonus, direct at least half of it to savings or investments before upgrading your lifestyle."
+            },
+            {
+                title: "Learn the Difference Between Good and Bad Debt",
+                text: "Student loans and mortgages can be investments in your future. Credit card debt at 20%+ interest is almost never worth it. Pay off high-interest debt aggressively."
+            },
+            {
+                title: "Start a Roth IRA Early",
+                text: "As a college student or young professional in a low tax bracket, Roth contributions are powerful. You pay taxes now at a low rate and never pay taxes on the growth."
+            },
+            {
+                title: "Automate Your Savings",
+                text: "Set up automatic transfers to savings on payday. If you never see the money in your checking account, you won't miss it. Pay yourself first."
+            },
+            {
+                title: "Build Your Credit Score Now",
+                text: "A good credit score saves you thousands on car loans, apartments, and eventually mortgages. Get a credit card, use less than 30% of the limit, and always pay on time."
+            },
+            {
+                title: "Understand Your Student Loans",
+                text: "Know your loan types, interest rates, and repayment options. Federal loans offer income-driven repayment and forgiveness programs. Private loans don't. Plan accordingly."
+            },
+            {
+                title: "Meal Prep to Save Money",
+                text: "Eating out costs 3-5x more than cooking. Preparing meals in bulk saves time and money. A $50 grocery trip can cover a week of lunches and dinners."
+            },
+            {
+                title: "Use Student Discounts While You Can",
+                text: "Your .edu email unlocks discounts on software, streaming services, travel, and more. Amazon Prime Student, Spotify, Apple Music—take advantage while eligible."
+            },
+            {
+                title: "Invest in Low-Cost Index Funds",
+                text: "You don't need to pick stocks. Index funds that track the S&P 500 have historically returned about 10% annually. Low fees mean more money stays invested."
+            },
+            {
+                title: "Don't Finance Depreciating Assets",
+                text: "Taking a loan for a new car, phone, or furniture means paying interest on something losing value. Buy used when possible, or save up and pay cash."
+            },
+            {
+                title: "Know Your Net Worth",
+                text: "Assets minus liabilities equals net worth. Track it quarterly. As a student, it might be negative—that's okay. The goal is steady improvement over time."
+            },
+            {
+                title: "Learn to Negotiate",
+                text: "Salaries, rent, bills, and prices are often negotiable. Asking politely for a better rate costs nothing and can save hundreds or thousands over time."
+            },
+            {
+                title: "Insurance Protects Your Wealth",
+                text: "Health insurance prevents medical bankruptcy. Renter's insurance protects your belongings cheaply. As you build assets, insurance becomes essential."
+            },
+            {
+                title: "Avoid Get-Rich-Quick Schemes",
+                text: "If it sounds too good to be true, it is. Crypto day trading, MLMs, and 'guaranteed return' investments prey on people wanting shortcuts. Wealth builds slowly and steadily."
+            },
+            {
+                title: "Time in the Market Beats Timing the Market",
+                text: "Trying to predict market ups and downs fails almost every time. Consistent, long-term investing through market cycles has historically been the winning strategy."
+            },
+            {
+                title: "Your Earning Potential is Your Biggest Asset",
+                text: "Investing in skills, education, and relationships that increase your income will have far greater returns than any stock pick. Never stop developing professionally."
+            }
+        ];
+
+        // Women's Roster with events
+        const womenRoster = [
+            { name: "Claussen, Isabella", year: "FR-1", event: null },
+            { name: "Coil, Sophie", year: "FR-1", event: "Shot Put - 11.24m" },
+            { name: "Craven, Lex", year: "FR-1", event: null },
+            { name: "Dougherty, Caitlyn", year: "FR-1", event: "200m, 400m" },
+            { name: "Fedio, Lyla", year: "SO-2", event: null },
+            { name: "Fitzgerald, Matilda", year: "FR-1", event: null },
+            { name: "Hanstveit, Anna", year: "FR-1", event: null },
+            { name: "Hanstveit, Emma", year: "FR-1", event: null },
+            { name: "Huynh, Nayeli", year: "FR-1", event: null },
+            { name: "Jimerson, Brielle", year: "SO-2", event: "4x400" },
+            { name: "Leonard, Charlotte", year: "FR-1", event: null },
+            { name: "Leonard, Tully", year: "SO-2", event: null },
+            { name: "Lytle, Kelsi", year: "FR-1", event: "60m - 7.85" },
+            { name: "MacLean, Katie", year: "JR-3", event: null },
+            { name: "McKamey, Cocome", year: "JR-3", event: "60H, HJ, LJ, Pentathlon" },
+            { name: "McKenna, Maddie", year: "FR-1", event: null },
+            { name: "Muellerleile, Katarina", year: "FR-1", event: "Pole Vault - 3.20m" },
+            { name: "Peila, Izzi", year: "FR-1", event: null },
+            { name: "Perez-Zoghbi, Isabel", year: "SO-2", event: "800m - 2:10.70" },
+            { name: "Roberts, Mia", year: "JR-3", event: null },
+            { name: "Shadden, Lily", year: "SO-2", event: null },
+            { name: "Tasky, Anna", year: "FR-1", event: null },
+            { name: "Touchet, Katelyn", year: "FR-1", event: null },
+            { name: "Weiseth, Brinna", year: "FR-1", event: "3000m - 10:35.40" },
+            { name: "White, Laura", year: "FR-1", event: null },
+            { name: "Winuk, Marielle", year: "JR-3", event: "Weight Throw - 12.62m" }
+        ];
+
+        // Men's Roster with events
+        const menRoster = [
+            { name: "Bailey, Donovan", year: "FR-1", event: null },
+            { name: "Becannon, Thomas", year: "FR-1", event: null },
+            { name: "Bishop, Cameron", year: "FR-1", event: null },
+            { name: "Blood, Zach", year: "JR-3", event: null },
+            { name: "Bondurant, Gabriel", year: "FR-1", event: "High Jump - 1.90m" },
+            { name: "Borin, Spencer", year: "FR-1", event: null },
+            { name: "Bowser, Joey", year: "JR-3", event: null },
+            { name: "Burns, Gavin", year: "FR-1", event: null },
+            { name: "Caricato, Scott", year: "FR-1", event: null },
+            { name: "Christoper, Jacob", year: "FR-1", event: null },
+            { name: "Clark, Thomas", year: "FR-1", event: null },
+            { name: "Cosio, Jacob", year: "SO-2", event: "5000m - 16:50.44" },
+            { name: "Cota, Jose", year: "FR-1", event: null },
+            { name: "Dillon, Alexander", year: "FR-1", event: null },
+            { name: "Domingue, Paul", year: "JR-3", event: null },
+            { name: "Dorris, Walker", year: "JR-3", event: null },
+            { name: "Feldenkirchen, Bennett", year: "JR-3", event: null },
+            { name: "Feldstein, Benjamin", year: "FR-1", event: null },
+            { name: "Friedman, Collin", year: "FR-1", event: "1000m, LJ, Heptathlon" },
+            { name: "Garrison, Adam", year: "JR-3", event: null },
+            { name: "Giglio, Ryan", year: "SO-2", event: "800m - 1:58.76" },
+            { name: "Gomez, Adam", year: "SO-2", event: null },
+            { name: "Gonzalez, Joseph", year: "JR-3", event: "Shot Put - 15.89m" },
+            { name: "Grubbs, Jonah", year: "FR-1", event: "3000m - 9:31.45" },
+            { name: "Henry, Keegan", year: "FR-1", event: null },
+            { name: "Huryn, Rylan", year: "FR-1", event: null },
+            { name: "Jimenez, Saul", year: "FR-1", event: null },
+            { name: "Kasso, Isaak", year: "SO-2", event: "60H - 8.50" },
+            { name: "Matsuura, Kai", year: "FR-1", event: null },
+            { name: "Moratti, Leo", year: "FR-1", event: null },
+            { name: "Murrell, Nathen", year: "FR-1", event: null },
+            { name: "Ochoa, Dylan", year: "SO-2", event: "400m - 49.12" },
+            { name: "Paul, Alonzo", year: "SR-4", event: "60m, 200m" },
+            { name: "Payan, Michael", year: "SO-2", event: "Pole Vault - 5.10m" },
+            { name: "Pearson, Bryce", year: "JR-3", event: null },
+            { name: "Perez, AJ", year: "FR-1", event: null },
+            { name: "Phillips, Hunter", year: "FR-1", event: "Mile - 4:30.64" },
+            { name: "Pratt, Connor", year: "JR-3", event: null },
+            { name: "Ray, Derek", year: "SO-2", event: null },
+            { name: "Sanford-Carroll, Vincent", year: "FR-1", event: null },
+            { name: "Saunders, Jamie", year: "SO-2", event: null },
+            { name: "Shaver, Daniel", year: "FR-1", event: null },
+            { name: "Shelton, Aidan", year: "SO-2", event: null },
+            { name: "Sides, Michael", year: "FR-1", event: null },
+            { name: "Smith, Adam", year: "FR-1", event: null },
+            { name: "Soriano, Orlando", year: "FR-1", event: null },
+            { name: "Stewart, Trevor", year: "FR-1", event: null },
+            { name: "Stroschine, Merrick", year: "FR-1", event: null },
+            { name: "Vaisset-Fauvel, Sebastian", year: "JR-3", event: null },
+            { name: "Van Der Meer, Kees", year: "SO-2", event: null },
+            { name: "Vigna, Justin", year: "SO-2", event: null },
+            { name: "Wiggins, Elias", year: "SO-2", event: null },
+            { name: "Woods, Tosh", year: "FR-1", event: null },
+            { name: "Woolery, James", year: "FR-1", event: null },
+            { name: "Woolery, Nicholas", year: "FR-1", event: null }
+        ];
+
+        // ===== HELPER FUNCTIONS =====
+
+        function getDayOfYear() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            return Math.floor(diff / oneDay);
+        }
+
+        function getItemForToday(array) {
+            const dayOfYear = getDayOfYear();
+            return array[dayOfYear % array.length];
+        }
+
+        function formatDate() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date().toLocaleDateString('en-US', options);
+        }
+
+        // ===== WEATHER FUNCTIONS =====
+
+        async function fetchWeather() {
+            const weatherContent = document.getElementById('weatherContent');
+            
+            try {
+                // Arcata, CA coordinates
+                const lat = 40.8665;
+                const lon = -124.0828;
+                
+                const response = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FLos_Angeles`
+                );
+                
+                if (!response.ok) throw new Error('Weather fetch failed');
+                
+                const data = await response.json();
+                displayWeather(data);
+            } catch (error) {
+                console.error('Weather error:', error);
+                weatherContent.innerHTML = `
+                    <div style="text-align: center; opacity: 0.7;">
+                        Unable to load weather data.<br>
+                        <small>Check back later or visit <a href="https://weather.gov" target="_blank" style="color: #f5c142;">weather.gov</a></small>
+                    </div>
+                `;
+            }
+        }
+
+        function getWeatherIcon(code) {
+            // WMO Weather interpretation codes
+            const icons = {
+                0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
+                45: '🌫️', 48: '🌫️',
+                51: '🌧️', 53: '🌧️', 55: '🌧️',
+                61: '🌧️', 63: '🌧️', 65: '🌧️',
+                71: '🌨️', 73: '🌨️', 75: '🌨️',
+                80: '🌦️', 81: '🌦️', 82: '🌦️',
+                95: '⛈️', 96: '⛈️', 99: '⛈️'
+            };
+            return icons[code] || '🌡️';
+        }
+
+        function getGearRecommendation(temp, precip, windSpeed, precipProb) {
+            let recommendations = [];
+            
+            if (temp < 45) {
+                recommendations.push("Layer up with sweats and a warm jacket");
+            } else if (temp < 55) {
+                recommendations.push("Light layers recommended");
+            } else if (temp > 75) {
+                recommendations.push("Light clothing, stay hydrated");
+            }
+            
+            if (precip > 0 || precipProb > 40) {
+                recommendations.push("Rain gear advised - bring a jacket");
+            }
+            
+            if (windSpeed > 15) {
+                recommendations.push("Windy conditions - secure loose items");
+            }
+            
+            if (recommendations.length === 0) {
+                recommendations.push("Good conditions for outdoor training");
+            }
+            
+            return recommendations.join(". ") + ".";
+        }
+
+        function displayWeather(data) {
+            const current = data.current;
+            const daily = data.daily;
+            
+            const temp = Math.round(current.temperature_2m);
+            const humidity = current.relative_humidity_2m;
+            const windSpeed = Math.round(current.wind_speed_10m);
+            const weatherCode = current.weather_code;
+            const precipProb = daily.precipitation_probability_max[0];
+            const high = Math.round(daily.temperature_2m_max[0]);
+            const low = Math.round(daily.temperature_2m_min[0]);
+            
+            const gearRec = getGearRecommendation(temp, current.precipitation, windSpeed, precipProb);
+            
+            document.getElementById('weatherContent').innerHTML = `
+                <div class="weather-main">
+                    <div class="weather-temp">${temp}°F</div>
+                    <div class="weather-icon">${getWeatherIcon(weatherCode)}</div>
+                </div>
+                <div class="weather-details">
+                    <div class="weather-detail-item">
+                        <div class="label">High/Low</div>
+                        <div class="value">${high}° / ${low}°</div>
+                    </div>
+                    <div class="weather-detail-item">
+                        <div class="label">Rain Chance</div>
+                        <div class="value">${precipProb}%</div>
+                    </div>
+                    <div class="weather-detail-item">
+                        <div class="label">Wind</div>
+                        <div class="value">${windSpeed} mph</div>
+                    </div>
+                </div>
+                <div class="gear-recommendation">
+                    <strong>🎒 Gear:</strong> ${gearRec}
+                </div>
+            `;
+        }
+
+        // ===== DISPLAY FUNCTIONS =====
+
+        function displayQuote() {
+            const quote = getItemForToday(quotes);
+            document.getElementById('quoteContent').innerHTML = `
+                <div class="quote-text">"${quote.text}"</div>
+                <div class="quote-author">— ${quote.author}</div>
+            `;
+        }
+
+        function displayMeal() {
+            const meal = getItemForToday(meals);
+            document.getElementById('mealContent').innerHTML = `
+                <div class="meal-name">${meal.name}</div>
+                <div class="meal-description">${meal.description}</div>
+                <div class="meal-macros">
+                    <span class="macro-item">🥩 ${meal.protein}</span>
+                    <span class="macro-item">🍚 ${meal.carbs}</span>
+                    <span class="macro-item">🥑 ${meal.fat}</span>
+                </div>
+                <a href="${meal.recipeUrl}" target="_blank" rel="noopener" class="recipe-link">
+                    📖 View Recipe
+                </a>
+                <div class="recipe-source">Recipe from ${meal.source}</div>
+            `;
+        }
+
+        function displayFinanceTip() {
+            const tip = getItemForToday(financeTips);
+            document.getElementById('financeContent').innerHTML = `
+                <div class="finance-tip-title">${tip.title}</div>
+                <div class="finance-tip-text">${tip.text}</div>
+            `;
+        }
+
+        function displayRosters() {
+            const womenContainer = document.getElementById('womenRoster');
+            const menContainer = document.getElementById('menRoster');
+            
+            womenRoster.forEach(athlete => {
+                const link = document.createElement('a');
+                link.href = `https://www.tfrrs.org/teams/tf/CA_college_f_Cal_Poly_Humboldt.html`;
+                link.className = 'athlete-link';
+                link.target = '_blank';
+                link.rel = 'noopener';
+                link.innerHTML = `
+                    ${athlete.name}<span class="athlete-year">${athlete.year}</span>
+                    ${athlete.event ? `<span class="athlete-event">${athlete.event}</span>` : ''}
+                `;
+                womenContainer.appendChild(link);
+            });
+            
+            menRoster.forEach(athlete => {
+                const link = document.createElement('a');
+                link.href = `https://www.tfrrs.org/teams/tf/CA_college_m_Cal_Poly_Humboldt.html`;
+                link.className = 'athlete-link';
+                link.target = '_blank';
+                link.rel = 'noopener';
+                link.innerHTML = `
+                    ${athlete.name}<span class="athlete-year">${athlete.year}</span>
+                    ${athlete.event ? `<span class="athlete-event">${athlete.event}</span>` : ''}
+                `;
+                menContainer.appendChild(link);
+            });
+        }
+
+        function toggleRoster(roster) {
+            const listId = roster === 'women' ? 'womenRoster' : 'menRoster';
+            const arrowId = roster === 'women' ? 'womenArrow' : 'menArrow';
+            const list = document.getElementById(listId);
+            const arrow = document.getElementById(arrowId);
+            
+            list.classList.toggle('active');
+            arrow.textContent = list.classList.contains('active') ? '▲' : '▼';
+        }
+
+        // ===== INITIALIZATION =====
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('dateDisplay').textContent = formatDate();
+            fetchWeather();
+            displayQuote();
+            displayMeal();
+            displayFinanceTip();
+            displayRosters();
+        });
+    </script>
+</body>
+</html>
