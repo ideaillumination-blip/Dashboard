@@ -31,6 +31,23 @@
             margin-bottom: 20px;
         }
 
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .team-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            background: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
         .header h1 {
             font-size: 1.5rem;
             color: #f5c142;
@@ -121,6 +138,132 @@
             border-radius: 8px;
             font-size: 0.9rem;
             border-left: 3px solid #f5c142;
+        }
+
+        /* Countdown Card */
+        .countdown-content {
+            text-align: center;
+        }
+
+        .countdown-event {
+            font-size: 1.1rem;
+            color: #f5c142;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px 16px;
+            border-radius: 10px;
+            min-width: 70px;
+            border: 1px solid rgba(245, 193, 66, 0.3);
+        }
+
+        .countdown-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f5c142;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown-date {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Meet Schedule Card */
+        .meet-schedule {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .meet-section-title {
+            font-weight: 700;
+            color: #f5c142;
+            padding: 10px 0 8px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(245, 193, 66, 0.3);
+            margin-top: 12px;
+        }
+
+        .meet-section-title:first-child {
+            margin-top: 0;
+        }
+
+        .meet-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .meet-item:last-child {
+            border-bottom: none;
+        }
+
+        .meet-date {
+            font-weight: 600;
+            color: #f5c142;
+            font-size: 0.8rem;
+            min-width: 85px;
+        }
+
+        .meet-name {
+            flex: 1;
+            font-size: 0.9rem;
+            min-width: 150px;
+        }
+
+        .meet-location {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            text-align: right;
+            width: 100%;
+        }
+
+        .meet-home {
+            background: rgba(245, 193, 66, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: #f5c142;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        .view-full-schedule {
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            padding: 10px;
+            background: rgba(245, 193, 66, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        .view-full-schedule:hover {
+            background: rgba(245, 193, 66, 0.4);
         }
 
         /* Quote Card */
@@ -242,6 +385,11 @@
             grid-column: 1 / -1;
         }
 
+        .link-button.highlight {
+            background: rgba(245, 193, 66, 0.2);
+            border-color: rgba(245, 193, 66, 0.4);
+        }
+
         /* Roster Section */
         .roster-section {
             margin-top: 8px;
@@ -340,29 +488,90 @@
         }
 
         /* Scrollbar styling */
-        .roster-list::-webkit-scrollbar {
+        .roster-list::-webkit-scrollbar,
+        .meet-schedule::-webkit-scrollbar {
             width: 6px;
         }
 
-        .roster-list::-webkit-scrollbar-track {
+        .roster-list::-webkit-scrollbar-track,
+        .meet-schedule::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.2);
             border-radius: 3px;
         }
 
-        .roster-list::-webkit-scrollbar-thumb {
+        .roster-list::-webkit-scrollbar-thumb,
+        .meet-schedule::-webkit-scrollbar-thumb {
             background: rgba(245, 193, 66, 0.5);
             border-radius: 3px;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            .countdown-item {
+                padding: 10px 12px;
+                min-width: 60px;
+            }
+            .countdown-number {
+                font-size: 1.5rem;
+            }
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+            .link-button.full-width {
+                grid-column: 1;
+            }
+            .meet-item {
+                flex-direction: column;
+            }
+            .meet-location {
+                text-align: left;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1>🏋️ Humboldt Throws</h1>
-            <div class="subtitle">Daily Dashboard</div>
+            <div class="header-content">
+                <!-- LOGO: Replace YOUR_LOGO_URL_HERE with your actual logo URL -->
+<img src="https://ideaillumination-blip.github.io/Dashboard/lumberjacks_primaryLogo.png" alt="Humboldt Throws Logo" class="team-logo" onerror="this.style.display='none'">                <div>
+                    <h1>Humboldt Throws</h1>
+                    <div class="subtitle">Daily Dashboard</div>
+                </div>
+            </div>
         </header>
 
         <div class="date-display" id="dateDisplay"></div>
+
+        <!-- Countdown Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">⏱️</span>
+                <span>Season Countdown</span>
+            </div>
+            <div class="countdown-content">
+                <div class="countdown-event">🏟️ Green & Gold Open</div>
+                <div class="countdown-timer">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="days">--</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="hours">--</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="minutes">--</div>
+                        <div class="countdown-label">Mins</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="seconds">--</div>
+                        <div class="countdown-label">Secs</div>
+                    </div>
+                </div>
+                <div class="countdown-date">February 28, 2026 • Redwood Bowl • Alumni Weekend</div>
+            </div>
+        </div>
 
         <!-- Weather Card -->
         <div class="card">
@@ -371,6 +580,136 @@
                 <span>Arcata Weather</span>
             </div>
             <div id="weatherContent" class="loading">Loading weather...</div>
+        </div>
+
+        <!-- Meet Schedule Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🗓️</span>
+                <span>2025-26 Meet Schedule</span>
+            </div>
+            <div class="meet-schedule">
+                <div class="meet-section-title">Indoor Season</div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Dec 4-6</div>
+                    <div class="meet-name">Silver State Invitational & Multis</div>
+                    <div class="meet-location">Reno, Nev. • Reno-Sparks Convention Center</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Feb 5-7</div>
+                    <div class="meet-name">Riverfront Invitational & Multis</div>
+                    <div class="meet-location">Spokane, Wash. • The Podium</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Feb 13-14</div>
+                    <div class="meet-name">GVSU Big Meet</div>
+                    <div class="meet-location">Allendale, Mich. • Kelly Family Sports Center</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Mar 13</div>
+                    <div class="meet-name">NCAA DII Indoor Championships</div>
+                    <div class="meet-location">Virginia Beach, Va. • Virginia Beach Sports Center</div>
+                </div>
+
+                <div class="meet-section-title">Outdoor Season</div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Feb 28</div>
+                    <div class="meet-name">Green & Gold Open <span class="meet-home">HOME</span></div>
+                    <div class="meet-location">Arcata, Calif. • Redwood Bowl</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Mar 5-6</div>
+                    <div class="meet-name">Sam Adams Multi</div>
+                    <div class="meet-location">Santa Barbara, Calif. • Pauley Track</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Mar 7</div>
+                    <div class="meet-name">Kim Duyst Invitational</div>
+                    <div class="meet-location">Turlock, Calif. • Al Brenda Track</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Mar 14</div>
+                    <div class="meet-name">Wildcat Invitational</div>
+                    <div class="meet-location">Chico, Calif. • University Stadium</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Mar 20-21</div>
+                    <div class="meet-name">Pacific Northwest Invite</div>
+                    <div class="meet-location">Corvallis, Ore. • Whyte Track and Field Center</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Mar 28</div>
+                    <div class="meet-name">Cal Poly Humboldt Invite <span class="meet-home">HOME</span></div>
+                    <div class="meet-location">Arcata, Calif. • Redwood Bowl</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Apr 3-4</div>
+                    <div class="meet-name">Mike Fanelli Track Classic</div>
+                    <div class="meet-location">San Francisco, Calif. • Cox Stadium</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Apr 3-4</div>
+                    <div class="meet-name">Brutus Hamilton Invitational & Multi</div>
+                    <div class="meet-location">Berkeley, Calif. • Edwards Stadium</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Apr 10-11</div>
+                    <div class="meet-name">Chico Invitational & Distance Carnival</div>
+                    <div class="meet-location">Chico, Calif. • University Stadium</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Apr 15-17</div>
+                    <div class="meet-name">Bryan Clay Invitational</div>
+                    <div class="meet-location">Azusa, Calif. • Cougar Athletic Stadium</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Apr 16</div>
+                    <div class="meet-name">Cal State LA Twilight</div>
+                    <div class="meet-location">Los Angeles, Calif. • Jesse Owens Track</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Apr 17-18</div>
+                    <div class="meet-name">Beach Invitational</div>
+                    <div class="meet-location">Long Beach, Calif. • Jack Rose Track</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">Apr 30 - May 2</div>
+                    <div class="meet-name">CCAA Championships</div>
+                    <div class="meet-location">San Marcos, Calif. • Mangrum Track & Field</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">May 7-9</div>
+                    <div class="meet-name">Franson Last Chance</div>
+                    <div class="meet-location">Azusa, Calif. • Cougar Athletic Stadium</div>
+                </div>
+                
+                <div class="meet-item">
+                    <div class="meet-date">May 21-23</div>
+                    <div class="meet-name">NCAA DII Outdoor Championships</div>
+                    <div class="meet-location">Emporia, Kan. • Welch Stadium</div>
+                </div>
+            </div>
+            <a href="https://humboldtathletics.com/sports/mens-track-and-field/schedule" target="_blank" class="view-full-schedule">
+                📅 View Full Schedule on Humboldt Athletics
+            </a>
         </div>
 
         <!-- Daily Quote Card -->
@@ -410,6 +749,14 @@
                 <a href="https://humboldtathletics.com/index.aspx" target="_blank" rel="noopener" class="link-button full-width">
                     <span class="link-icon">🌲</span>
                     <span class="link-text">Humboldt Athletics</span>
+                </a>
+                <a href="YOUR_NOTION_URL_HERE" target="_blank" rel="noopener" class="link-button highlight">
+                    <span class="link-icon">📝</span>
+                    <span class="link-text">Workouts</span>
+                </a>
+                <a href="YOUR_RULEBOOK_PDF_URL_HERE" target="_blank" rel="noopener" class="link-button highlight">
+                    <span class="link-icon">📖</span>
+                    <span class="link-text">Rulebook</span>
                 </a>
                 <a href="https://www.tfrrs.org/teams/tf/CA_college_m_Cal_Poly_Humboldt.html" target="_blank" rel="noopener" class="link-button">
                     <span class="link-icon">👨</span>
@@ -827,6 +1174,31 @@
             return new Date().toLocaleDateString('en-US', options);
         }
 
+        // ===== COUNTDOWN FUNCTION =====
+
+        function updateCountdown() {
+            const eventDate = new Date('2026-02-28T09:00:00');
+            const now = new Date();
+            const diff = eventDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+            } else {
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+            }
+        }
+
         // ===== WEATHER FUNCTIONS =====
 
         async function fetchWeather() {
@@ -1020,6 +1392,8 @@
             displayMeal();
             displayFinanceTip();
             displayRosters();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
         });
     </script>
 </body>
