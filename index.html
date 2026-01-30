@@ -964,7 +964,6 @@
         // ===== DATA STORES =====
 
         // Throwers Performance Data - UPDATE THIS AFTER EACH MEET
-        // Format: { name, year, tfrrsId, marks: [{event, mark, markImperial}] }
         const throwersData = [
             {
                 name: "Marielle Winuk",
@@ -980,7 +979,7 @@
             {
                 name: "Joseph Gonzalez",
                 year: "SO-2",
-                tfrrsId: "8687500", // Replace with actual TFRRS ID
+                tfrrsId: "8687500",
                 gender: "m",
                 marks: [
                     { event: "SP", mark: "16.26m", markImperial: "53' 4.25\"" },
@@ -988,16 +987,16 @@
                 ]
             },
             {
-    name: "AJ Perez",
-    year: "FR-1",
-    tfrrsId: "9255543",
-    gender: "m",
-    marks: []  // No marks recorded yet
-},
-    {
-name: "Derek Ray",
+                name: "AJ Perez",
                 year: "FR-1",
-                tfrrsId: "9876543", // Replace with actual TFRRS ID
+                tfrrsId: "9255543",
+                gender: "m",
+                marks: []
+            },
+            {
+                name: "Derek Ray",
+                year: "FR-1",
+                tfrrsId: "9876543",
                 gender: "m",
                 marks: [
                     { event: "SP", mark: "15.55m", markImperial: "51' 0.25\"" },
@@ -1007,17 +1006,17 @@ name: "Derek Ray",
             {
                 name: "Ruari Mulrey",
                 year: "FR-1",
-                tfrrsId: "9876544", // Replace with actual TFRRS ID
+                tfrrsId: "9876544",
                 gender: "m",
                 marks: [
                     { event: "DT", mark: "45.16m", markImperial: "148' 2\"" },
-                    { event: "JT", mark: "48.55m", markImperial: "159' 3\"" }          
+                    { event: "JT", mark: "48.55m", markImperial: "159' 3\"" }
                 ]
             },
             {
                 name: "Adam Gomez",
                 year: "SO-2",
-                tfrrsId: "9876546", // Replace with actual TFRRS ID
+                tfrrsId: "9876546",
                 gender: "m",
                 marks: [
                     { event: "SP", mark: "12.74m", markImperial: "41' 9.75\"" },
@@ -1028,7 +1027,7 @@ name: "Derek Ray",
             {
                 name: "Damian Greenwood",
                 year: "JR-3",
-                tfrrsId: "9876547", // Replace with actual TFRRS ID
+                tfrrsId: "9876547",
                 gender: "m",
                 marks: [
                     { event: "JT", mark: "51.36m", markImperial: "168' 6\"" }
@@ -1037,47 +1036,46 @@ name: "Derek Ray",
             {
                 name: "Samantha Smith",
                 year: "SO-2",
-                tfrrsId: "9876549", // Replace with actual TFRRS ID
+                tfrrsId: "9876549",
                 gender: "f",
                 marks: [
                     { event: "DT", mark: "40.55m", markImperial: "133' 0\"" }
-]
-    },
-{
-    name: "Sophie Coil",
-    year: "FR-1",
-    tfrrsId: "9255614",
-    gender: "f",
-    marks: [
-        { event: "SP", mark: "11.24m", markImperial: "36' 10.5\"" }
-    ]
-},
-{
-    name: "Laura White",
-    year: "FR-1",
-    tfrrsId: "9255610",
-    gender: "f",
-    marks: [
-        { event: "SP", mark: "10.44m", markImperial: "34' 3\"" }
-    ]
-},
-{
-    name: "Isabella Claussen",
-    year: "FR-1",
-    tfrrsId: "9255611",
-    gender: "f",
-    marks: [
-        { event: "SP", mark: "11.20m", markImperial: "36' 9\"" }
-    ]
-},
-{
-    name: "Benjamin Feldstein",
-    year: "FR-1",
-    tfrrsId: "9255540",
-    gender: "m",
-    marks: []  // No marks recorded yet
                 ]
             },
+            {
+                name: "Sophie Coil",
+                year: "FR-1",
+                tfrrsId: "9255614",
+                gender: "f",
+                marks: [
+                    { event: "SP", mark: "11.24m", markImperial: "36' 10.5\"" }
+                ]
+            },
+            {
+                name: "Laura White",
+                year: "FR-1",
+                tfrrsId: "9255610",
+                gender: "f",
+                marks: [
+                    { event: "SP", mark: "10.44m", markImperial: "34' 3\"" }
+                ]
+            },
+            {
+                name: "Isabella Claussen",
+                year: "FR-1",
+                tfrrsId: "9255611",
+                gender: "f",
+                marks: [
+                    { event: "SP", mark: "11.20m", markImperial: "36' 9\"" }
+                ]
+            },
+            {
+                name: "Benjamin Feldstein",
+                year: "FR-1",
+                tfrrsId: "9255540",
+                gender: "m",
+                marks: []
+            }
         ];
 
         const quotes = [
@@ -1882,7 +1880,6 @@ name: "Derek Ray",
             const weatherContent = document.getElementById('weatherContent');
             
             try {
-                // Arcata, CA coordinates
                 const lat = 40.8665;
                 const lon = -124.0828;
                 
@@ -1906,7 +1903,6 @@ name: "Derek Ray",
         }
 
         function getWeatherIcon(code) {
-            // WMO Weather interpretation codes
             const icons = {
                 0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
                 45: '🌫️', 48: '🌫️',
@@ -1989,8 +1985,9 @@ name: "Derek Ray",
         function displayAthletePerformance() {
             const grid = document.getElementById('athletePerformanceGrid');
             
-            // Sort by gender then name
-            const sortedAthletes = [...throwersData].sort((a, b) => {
+            // Filter out athletes with no marks, then sort by gender then name
+            const athletesWithMarks = throwersData.filter(athlete => athlete.marks.length > 0);
+            const sortedAthletes = [...athletesWithMarks].sort((a, b) => {
                 if (a.gender !== b.gender) return a.gender === 'f' ? -1 : 1;
                 return a.name.localeCompare(b.name);
             });
